@@ -1,5 +1,7 @@
 
-import sun.awt.geom.AreaOp;
+import database.HibernateSessionFactory;
+import database.RegistrationEntity;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,7 +43,26 @@ public class Main extends HttpServlet {
                     "\n" +
                     "</body>\n" +
                     "</html>");
-            ConnectionDB a = new ConnectionDB();
+
+
+        System.out.println("Hibernate tutorial");
+
+        Session session1 = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session1.beginTransaction();
+
+        RegistrationEntity registrationEntity = new RegistrationEntity();
+
+        registrationEntity.setId(1);
+        registrationEntity.setFirst(name);
+        registrationEntity.setLast(sname);
+        registrationEntity.setFather(fname);
+
+        session1.save(registrationEntity);
+        session1.getTransaction().commit();
+        session1.close();
+
+      /*  ConnectionDB a = new ConnectionDB();
             try
             {
                 a.connect(name,sname,fname);
@@ -51,7 +72,7 @@ public class Main extends HttpServlet {
             }
             catch(SQLException q){
                 System.out.println("2");
-            }
+            }*/
 
                 }
 

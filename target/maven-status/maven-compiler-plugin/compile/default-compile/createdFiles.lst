@@ -1,3 +1,4 @@
+database\RegistrationEntity.class
 Main.class
 LogFilter.class
 ConnectionDB.class
@@ -5,3 +6,4 @@ ThirdServlet.class
 MySessionListener.class
 FirstServlet.class
 SecondServlet.class
+database\HibernateSessionFactory.class

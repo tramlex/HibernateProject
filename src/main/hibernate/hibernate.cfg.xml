@@ -7,8 +7,8 @@
     <property name="connection.url">jdbc:h2:~/test</property>
     <property name="connection.driver_class">org.h2.Driver</property>
     <mapping class="database.RegistrationEntity"/>
-    <!-- <property name="connection.username"/> -->
-    <!-- <property name="connection.password"/> -->
+    <property name="hibernate.connection.username">sa</property>
+    <property name="hibernate.connection.password"/>
 
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
