@@ -1,40 +1,52 @@
 package database;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+import java.math.BigInteger;
+
 
 public class HibernateSessionFactory {
 
-    private static SessionFactory sessionFactory = buildSessionFactory();
+    public static void AddData(String name , String sname , String fname) {
 
-    protected static SessionFactory buildSessionFactory() {
-        // A SessionFactory is set up once for an application!
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
+        RegistrationEntity registrationEntity = new RegistrationEntity();
+
+        registrationEntity.setId(1);
+        registrationEntity.setFirst(name);
+        registrationEntity.setLast(sname);
+        registrationEntity.setFather(fname);
+
+        SessionFactory sessionFactory = buildSessionFactory(RegistrationEntity.class);
+
+        Session session = sessionFactory.openSession();
+
+
+        Transaction tx = session.beginTransaction();
+        session.save(registrationEntity);
+        tx.commit();
+
+        RegistrationEntity savedRegistrationEntity = session.get(RegistrationEntity.class , 1);
+        System.out.println("______________");
+        System.out.println("Name: " + savedRegistrationEntity.getFirst());
+        System.out.println("SecondName: " + savedRegistrationEntity.getLast());
+        System.out.println("______________");
+
+        System.out.print("Saved to DB!!!");
+
+        session.close();
+        sessionFactory.close();
+
+    }
+    private static SessionFactory buildSessionFactory(Class clazz){
         try {
-            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
+
+            return new Configuration().configure().addAnnotatedClass(clazz).buildSessionFactory();
+
+        } catch (Throwable ex) {
+
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
         }
-        catch (Exception e) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            StandardServiceRegistryBuilder.destroy( registry );
-
-            throw new ExceptionInInitializerError("Initial SessionFactory failed" + e);
-        }
-        return sessionFactory;
-    }
-
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public static void shutdown() {
-        // Close caches and connection pools
-        getSessionFactory().close();
     }
 
 }

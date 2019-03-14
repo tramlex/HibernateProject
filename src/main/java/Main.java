@@ -1,11 +1,8 @@
 
 import database.HibernateSessionFactory;
-import database.RegistrationEntity;
-import org.hibernate.Session;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+
 @WebServlet("/Main")
 public class Main extends HttpServlet {
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -45,35 +45,13 @@ public class Main extends HttpServlet {
                     "</html>");
 
 
-        System.out.println("Hibernate tutorial");
+        System.out.println("Hibernate tutorial , START");
 
-        Session session1 = HibernateSessionFactory.getSessionFactory().openSession();
+        HibernateSessionFactory hibernateSessionFactory = new HibernateSessionFactory();
+        hibernateSessionFactory.AddData(name ,sname ,fname);
 
-        session1.beginTransaction();
+        System.out.println("Hibernate tutorial , END");
+    }
 
-        RegistrationEntity registrationEntity = new RegistrationEntity();
-
-        registrationEntity.setId(1);
-        registrationEntity.setFirst(name);
-        registrationEntity.setLast(sname);
-        registrationEntity.setFather(fname);
-
-        session1.save(registrationEntity);
-        session1.getTransaction().commit();
-        session1.close();
-
-      /*  ConnectionDB a = new ConnectionDB();
-            try
-            {
-                a.connect(name,sname,fname);
-            }
-            catch(ClassNotFoundException q){
-                System.out.println("1");
-            }
-            catch(SQLException q){
-                System.out.println("2");
-            }*/
-
-                }
 
     }
